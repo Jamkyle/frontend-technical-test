@@ -59,21 +59,25 @@
     {
       "id": 1,
       "nickname": "Thibaut",
+      "picture_url": "https://avatars.dicebear.com/api/avataaars/thibault.svg?background=%230000ff",
       "token": "xxxx"
     },
     {
       "id": 2,
       "nickname": "Jeremie",
+      "picture_url": "https://avatars.dicebear.com/api/avataaars/jeremie.svg?background=%230000ff",
       "token": "xxxx"
     },
     {
       "id": 3,
       "nickname": "Patrick",
+      "picture_url": "https://avatars.dicebear.com/api/avataaars/patrick.svg?background=%23ff00ff",
       "token": "xxxx"
     },
     {
       "id": 4,
       "nickname": "Elodie",
+      "picture_url": "https://avatars.dicebear.com/api/avataaars/elodie.svg?background=%23ff0000",
       "token": "xxxx"
     }
   ]
