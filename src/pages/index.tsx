@@ -1,12 +1,9 @@
-import type { FC } from 'react'
-import Head from 'next/head'
-import Image from 'next/image'
-import Logo from '../assets/lbc-logo.webp'
-import styles from '../styles/Home.module.css'
+import { FC, useContext } from "react";
+import { UserContext } from "src/context/UserContext";
 
 const Home: FC = () => {
   const year = new Date().getFullYear()
-
+  const { user } = useContext(UserContext);
   return (
     <div className={styles.container}>
       <Head>
@@ -15,10 +12,7 @@ const Home: FC = () => {
       </Head>
 
       <main className={styles.main}>
-        <Image src={Logo} alt="Leboncoin Frontend Team" width={400} height={125} layout="fixed" />
-        <h1 className={styles.title}>
-          Welcome !
-        </h1>
+        <Link href={`/conversations/${user?.id}`}>chat here!</Link>
 
         <p className={styles.description}>
           This test is based on a <a title="Next.js documentation" href="https://nextjs.org/docs/getting-started" target="_blank" rel="noopener noreferrer">Next.js</a> application.<br />
