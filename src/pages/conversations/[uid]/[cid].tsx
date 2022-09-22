@@ -13,23 +13,28 @@ import styles from "src/styles/Conversation.module.css";
 
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
-const Conversation = ({
-  messages,
-  cid,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Conversation = ({ messages, cid }) => {
   const { user } = useContext(UserContext);
   const router = useRouter();
   const input = useRef(null);
   const { picture, nickname } = router.query;
   let prevMessageAuthor = null;
   const handleSendMessage = () => {
-    fetch(`${config.API.URL}/messages/${cid}`, {
-      method: "POST",
-      body: JSON.stringify({
-        body: input.current.value,
-        timestamp: Date.now().toString(),
-      }),
-    }).then(() => (input.current.value = ""));
+    if (input.current.value !== "") {
+      fetch(`${config.API.URL}/messages/${cid}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "bearer " + user.token,
+        },
+        body: JSON.stringify({
+          conversationId: cid,
+          body: input.current.value,
+          authorId: user?.id,
+          timestamp: Date.now(),
+        }),
+      }).then(() => (input.current.value = ""));
+    }
   };
   const backHandler = () => {
     router.back();
@@ -67,7 +72,7 @@ const Conversation = ({
         )}
       </main>
       <div className={styles.inputConversation}>
-        <input id="conversation" ref={input} />
+        <textarea id="conversation" ref={input} />
         <FontAwesomeIcon
           className={styles.sendIcon}
           icon={faPaperPlane}
@@ -90,11 +95,11 @@ export const getStaticProps = async ({ params }) => {
       };
     }
     return {
+      revalidate: 1,
       props: {
         cid,
         messages,
       },
-      revalidate: 10,
     };
   } catch (error) {
     console.error(error);
