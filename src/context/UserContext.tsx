@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { User } from "types/user";
 import { getLoggedUserId } from "src/utils/getLoggedUserId";
 
+import config from "config/constants.json";
+
 export interface UserContext {
   user: User | null;
   login?: () => void;
@@ -28,11 +30,20 @@ const userReducer = (state = null, action: Action) => {
 
 export function UserWrapper({ children }) {
   const [user, dispatch] = React.useReducer(userReducer, null);
-  const login = () =>
-    dispatch({
-      type: "SET_USER",
-      data: { id: getLoggedUserId() },
-    });
+  const login = async () => {
+    try {
+      const userRaw = await fetch(
+        `${config.API.URL}/users/${getLoggedUserId() ? getLoggedUserId() : 1}`
+      );
+      const userData = await userRaw.json();
+      dispatch({
+        type: "SET_USER",
+        data: userData,
+      });
+    } catch (error) {
+      console.error("Error on fetch user: ", error);
+    }
+  };
   const logout = () =>
     dispatch({
       type: "LOGOUT_USER",
